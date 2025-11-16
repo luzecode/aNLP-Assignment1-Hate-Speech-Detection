@@ -159,9 +159,13 @@ def features2(data, k=1):
     bigram_data = []
     for tokens, label in data:
         enhanced_tokens = list(tokens)
-        #add bigrams
-        for i in range(len(tokens) - 1):
-            bigram = tokens[i] + "_" + tokens[i + 1]
+        
+        #add beginning and end of sentence marker
+        tokens_with_markers = ['<START>'] + tokens + ['<END>']
+        
+        # add bigrams with sentence boundary markers
+        for i in range(len(tokens_with_markers) - 1):
+            bigram = tokens_with_markers[i] + "_" + tokens_with_markers[i + 1]
             enhanced_tokens.append(bigram)
         
         bigram_data.append((enhanced_tokens, label))

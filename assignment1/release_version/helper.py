@@ -30,7 +30,9 @@ def train_smooth(train_data, test_data):
         results.append((k, acc, f1))
         accuracies.append(acc)
         f1_scores.append(f1)
-        
+    
+    best_k, best_acc, best_f1 = max(results, key=lambda x: x[2])
+    print(f"BEST SMOOTHING PARAMETER: k={best_k}, Accuracy: {best_acc:.4f}, F1 Score: {best_f1:.4f}")
     # create graph, and plot accuracy and f1 scores
     plt.figure(figsize=(10, 6))
     plt.plot(k_values, accuracies, marker='o', linewidth=1.5, markersize=5, label='Accuracy', color='green')
