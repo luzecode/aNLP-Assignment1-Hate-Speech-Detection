@@ -2,7 +2,7 @@
 
 % Packages
 \usepackage[utf8]{inputenc}
-\usepackage[margin=1in]{geometry}
+\usepackage[margin=0.8in]{geometry}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{booktabs}
@@ -15,9 +15,9 @@
 % Title information
 \title{\textbf{Advanced Natural Language Processing} \\
 
-       \large Assignment 1: Twitter hate speech detection using Naive Bayes and \\
+       \large Assignment 1: Twitter hate speech detection using Naive Bayes and
 Logistic Regression}
-\author{Lucia Welther \\ Matrikelnummer: XXXXXXX}
+\author{Lucia Welther, Matrikelnummer: 835106}
 \date{\today}
 
 \begin{document}
@@ -28,22 +28,19 @@ Logistic Regression}
 \section{Smoothing Parameter Analysis}
 % ============================================================
 
-Figure~\ref{fig:smoothing} shows the relationship between the smoothing parameter \( k \) and model performance.
-
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{test_smooth.png}
+    \includegraphics[width=0.5\textwidth]{test_smooth.png}
     \caption{Accuracy and F1-score as functions of smoothing parameter \( k \)}
     \label{fig:smoothing}
 \end{figure}
 
-\textbf{Observations:}
+\textbf{Observations from Figure~\ref{fig:smoothing}:}
 \begin{itemize}
-    \item When \( k \) is very small (e.g., 0.001), the model shows [describe performance - e.g., "lower performance due to overfitting to the training data"].
-    \item As \( k \) increases to around [X], performance [increases/stabilizes] because...
-    \item When \( k \) becomes very large (e.g., 10), performance [decreases/remains stable] because...
+\item Very small smoothing values (e.g.\ $k=0.001$) lead to overfitting: the model depends too much on exact training frequencies and handles unseen words poorly.
+\item Moderate smoothing (e.g.\ $k=0.5$) gives the best performance by balancing observed counts with reasonable estimates for unseen words.
+\item Very large smoothing values (e.g.\ $k=10$) over-smooth the probabilities, making word distinctions weak and reducing accuracy.
 \end{itemize}
-
 
 % ============================================================
 \section{Feature Engineering}
@@ -51,25 +48,18 @@ Figure~\ref{fig:smoothing} shows the relationship between the smoothing paramete
 
 \subsection{Feature Set 1: Stopword Removal}
 
-\textbf{Results:}
-\begin{itemize}
-    \item Accuracy: [your value]
-    \item F1-score: [your value]
-\end{itemize}
-
+Removing stopwords reduces noise by eliminating very frequent and
+non-informative words. Stopwords 
+occur in both classes and do not help distinguish offensive from 
+non-offensive tweets. After removing them, the model focuses on 
+more meaningful content words, improving accuracy and F1-score.
 
 \subsection{Feature Set 2: Bigrams}
 
-\textbf{Results:}
-\begin{itemize}
-    \item Accuracy: [your value]
-    \item F1-score: [your value]
-\end{itemize}
-
-
-\subsection{Comparison}
-
-Table~\ref{tab:features} summarizes the performance of different feature sets.
+Bigrams capture word order and context, allowing the model to distinguish 
+phrases like ``not good'' from ``good''. Offensive language often contains specific 
+multi-word expressions that bigrams can identify. By combining unigrams and 
+bigrams, the model learns both individual words and contextual word pairs.
 
 \begin{table}[H]
 \centering
@@ -79,38 +69,29 @@ Table~\ref{tab:features} summarizes the performance of different feature sets.
 \toprule
 \textbf{Feature Set} & \textbf{Accuracy} & \textbf{F1-Score} \\ 
 \midrule
-Baseline (Bag-of-Words) & X.XXXX & X.XXXX \\
-Binary BoW (Feature 1) & X.XXXX & X.XXXX \\
-Bigrams (Feature 2) & X.XXXX & X.XXXX \\
+Baseline & 0.8572 &  0.7159 \\
+Stopword Removal (Feature 1) & 0.8597 & 0.7209 \\
+Bigrams (Feature 2) & 0.8548 & 0.6672 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
+As seen in Table~\ref{tab:features}, Feature 1 (stopword removal) slightly improves 
+both metrics (accuracy: 0.8597, F1: 0.7209), demonstrating that removing 
+non-discriminative words helps focus on meaningful content. However, 
+Feature 2 (bigrams) decreases performance (accuracy: 0.8548, F1: 0.6672), 
+likely due to vocabulary expansion causing data sparsity issues. The increased 
+feature space introduces many rare bigrams with unreliable probability estimates, 
+leading to overfitting. This suggests that for this dataset size, vocabulary reduction 
+is more effective than feature expansion.
 
 % ============================================================
 \section{Model Evaluation Results}
 % ============================================================
 
-\subsection{Naive Bayes Classifier}
-
-The Naive Bayes classifier with optimal smoothing parameter \( k = \) [your value] achieved:
-\begin{itemize}
-    \item \textbf{Accuracy:} [your value]
-    \item \textbf{F1-Score:} [your value]
-\end{itemize}
-
-\subsection{Logistic Regression Classifier}
-
-The Logistic Regression classifier with learning rate \( \eta = 0.01 \), 10 epochs, and L2 regularization parameter \( C = 0.1 \) achieved:
-\begin{itemize}
-    \item \textbf{Accuracy:} [your value]
-    \item \textbf{F1-Score:} [your value]
-\end{itemize}
-
-\subsection{Overall Comparison}
-
-Table~\ref{tab:models} compares the two classifiers.
-
+The Naive Bayes classifier with optimal smoothing parameter \( k = 0.5 \) and the 
+Logistic Regression classifier with learning rate \( \eta = 0.01 \), 10 epochs, 
+and L2 regularization parameter \( C = 0.1 \) achieved:
 \begin{table}[H]
 \centering
 \caption{Performance comparison of Naive Bayes vs. Logistic Regression}
@@ -119,42 +100,48 @@ Table~\ref{tab:models} compares the two classifiers.
 \toprule
 \textbf{Model} & \textbf{Accuracy} & \textbf{F1-Score} \\ 
 \midrule
-Naive Bayes & X.XXXX & X.XXXX \\
-Logistic Regression & X.XXXX & X.XXXX \\
+Naive Bayes & 0.8572 & 0.7159 \\
+Logistic Regression & 0.8148 & 0.4506 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+As shown in Table~\ref{tab:models}, Naive Bayes significantly outperforms 
+Logistic Regression (F1: 0.7159 vs. 0.4506). Despite Logistic Regression's 
+flexibility, Naive Bayes excels due to appropriate independence assumptions, 
+resistance to overfitting on small data, and sufficient training compared to 
+Logistic Regression's limited 10 epochs. This demonstrates that simpler models 
+can be more effective with limited training data.
 
 % ============================================================
 % BONUS SECTION (if applicable)
 % ============================================================
 \section{Bonus: Discussion Questions}
 
-\subsection{Effect of Smoothing Parameter}
+\begin{itemize}
 
-[Answer Question 1: What is the effect of the smoothing parameter k in Naive Bayes for the calculation of word probabilities? What happens to the probabilities of the words when k is very large compared to their observed frequencies in the training data?]
+    \item \textbf{Effect of Smoothing Parameter:}
+    The smoothing parameter $k$ prevents zero probabilities for unseen words by adding pseudocounts; very small $k$ may cause overfitting, while very large $k$ makes word probabilities nearly uniform and harms model performance.
 
-\subsection{Word Order Shuffling}
+    \item \textbf{Word Order Shuffling:}
+    Shuffling word order does not affect Naive Bayes or bag-of-words logistic regression because both treat documents as unordered collections of words.
 
-[Answer Question 2: If we shuffle the order of the words within each document during training, will this affect the results of the model on the test set? Why or why not?]
+    \item \textbf{Purpose of Softmax Function:}
+    Softmax converts raw class scores into normalized probabilities that sum to 1, enabling meaningful comparison between classes.
 
-\subsection{Purpose of Softmax Function}
+    \item \textbf{Decision Threshold Tuning:}
+    The decision threshold can be adjusted after training based on validation or test predictions, so no retraining is required.
 
-[Answer Question 3: Why do we need the softmax function if the model already produces a score for each class?]
+\end{itemize}
 
-\subsection{Decision Threshold Tuning}
-
-[Answer Question 4: In this binary classification setup we select the predicted class by taking the arg max over the class scores. In this case is equivalent to choosing the class whose predicted probability is greater than 0.5. If we wanted to fine-tune the decision threshold to improve the evaluation results: how many times (if at all) do we need to train the model to find the best threshold value?]
 
 \subsection{GitHub Repository}
 
-The complete implementation is available at: \url{https://github.com/yourusername/nlp-assignment1}
+GitHub Repository: \url{https://github.com/luzecode/aNLP-Assignment1-Hate-Speech-Detection.git}
 
-\textbf{Last commit hash:} \texttt{d}
+\textbf{Last commit hash:} \texttt{First Commit: NLP Assignment1}
 
 
-
-\section{Conclusion}
 
 
 

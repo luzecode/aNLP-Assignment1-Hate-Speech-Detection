@@ -31,13 +31,9 @@ def train_smooth(train_data, test_data):
         accuracies.append(acc)
         f1_scores.append(f1)
         
-    # create graph
+    # create graph, and plot accuracy and f1 scores
     plt.figure(figsize=(10, 6))
-    
-    # plotting accuracy
     plt.plot(k_values, accuracies, marker='o', linewidth=1.5, markersize=5, label='Accuracy', color='green')
-    
-    # plotting f1 score
     plt.plot(k_values, f1_scores, marker='s', linewidth=1.5, markersize=5, label='f1 Score', color='orange')
     
     # titles and other custumizations
@@ -101,7 +97,7 @@ def train_logreg(train_data, test_data):
     logreg = LogReg(eta=0.01, num_iter=10)
     logreg.train(X_train, Y_train)
 
-    #for evaluation a string format is required therefore its needed to restructure the test data
+    #for evaluation a string format is required therefore it's needed to restructure the test data
     test_examples = []
     for x_row, y_row in zip(X_test, Y_test):
 

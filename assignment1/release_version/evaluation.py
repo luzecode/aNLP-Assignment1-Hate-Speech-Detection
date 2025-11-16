@@ -9,6 +9,7 @@ def accuracy(classifier, data):
         The accuracy of the classifier on the test data, a float.
     """
     ##################### STUDENT SOLUTION #########################
+    #keeping track of correct and total predictions to get accuracy
     correct = 0
     total = 0
 

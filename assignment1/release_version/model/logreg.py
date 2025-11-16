@@ -3,10 +3,10 @@ import numpy as np
 
 class LogReg:
     def __init__(self, eta=0.01, num_iter=30, C=0.1):
-        self.eta = eta
+        self.eta = eta          # learning rate
         self.num_iter = num_iter
-        self.C = C
-        self.W = None 
+        self.C = C              # L2 regularization strength
+        self.W = None           # weight matrix (F x 2)
 
     def softmax(self, inputs):
         """
@@ -16,13 +16,10 @@ class LogReg:
         """
         # TODO: adapt for your solution
         scores = np.asarray(inputs)
-
-        # numerical stability: subtract max in each row
+        # make values smaller to avoid overflow
         scores = scores - np.max(scores, axis=1, keepdims=True)
-
         exp_scores = np.exp(scores)
         return exp_scores / np.sum(exp_scores, axis=1, keepdims=True)
-
 
     def train(self, X, Y):
 
@@ -38,16 +35,17 @@ class LogReg:
             self.W = np.zeros((F, C), dtype=np.float32)
 
         for it in range(self.num_iter):
+            # forward pass
             scores = X @ self.W          # N x C
             probs  = self.softmax(scores)
 
-            # gradient of cross-entropy
+            # gradient of loss
             grad = X.T @ (probs - Y) / N   # F x C
 
-            # L2 regularization: + (1/C) * W
+            # add L2 term
             grad += (1.0 / self.C) * self.W
 
-            # gradient descent update
+            # update weights
             self.W -= self.eta * grad
 
         return None
@@ -78,7 +76,7 @@ class LogReg:
         X = np.asarray(X, dtype=np.float32)
         single = False
 
-        # If X is a single example, reshape to (1, F)
+        # handle single example, reshape to (1, F)
         if X.ndim == 1:
             single = True
             X = X[None, :]
@@ -88,7 +86,7 @@ class LogReg:
 
         idx2label = {0: "offensive", 1: "nonoffensive"}
 
-        # Build Python list of Python strings
+        # list of strings
         labels = [idx2label[int(i)] for i in class_idx]
 
         if len(labels) == 1:
@@ -138,32 +136,32 @@ def featurize(data, train_data=None):
     else:
         corpus = data
 
-    # 2) Build vocabulary from corpus
+    # build vocab
     vocab = set()
     for tokens, label in corpus:
         vocab.update(tokens)
 
-    # 3) Word-to-index mapping
+    # word-to-index mapping
     w2i = buildw2i(vocab)
     vocab_size = len(w2i)
     N = len(data)
 
-    # 4) Allocate X and Y
+    # create empty feature matrix X and Y
     X = np.zeros((N, vocab_size), dtype=np.float32)
     Y = np.zeros((N, 2), dtype=np.float32)
 
-    # 5) Fill X and Y
+    # with bag-of-words filling up feature matrices X and Y
     for i, (tokens, label) in enumerate(data):
-        # Binary bag-of-words features
+        # set X[i] to 1 where a word appears in the tweet
         for word in tokens:
             if word in w2i:
                 X[i, w2i[word]] = 1.0
 
-        # One-hot labels: [1,0] offensive, [0,1] nonoffensive
+        # with one-hot encoding: [1,0] offensive, [0,1] nonoffensive
         if label == "offensive":
             Y[i, 0] = 1.0
             Y[i, 1] = 0.0
-        else:  # 'nonoffensive'
+        else: 
             Y[i, 0] = 0.0
             Y[i, 1] = 1.0
 

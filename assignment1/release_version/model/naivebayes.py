@@ -124,6 +124,7 @@ def features1(data, k=1):
     # YOUR CODE HERE
     """removing stop words from a document to filter out "unimportant" words
     to have a cleaner result"""
+    #manually set stop words to filter out
     stop_words = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 
                       'to', 'for', 'of', 'with', 'by', 'from', 'is', 'was'}
     
