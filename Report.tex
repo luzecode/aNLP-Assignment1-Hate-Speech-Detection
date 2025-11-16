@@ -1,0 +1,161 @@
+\documentclass[11pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+
+% Title information
+\title{\textbf{Advanced Natural Language Processing} \\
+
+       \large Assignment 1: Twitter hate speech detection using Naive Bayes and \\
+Logistic Regression}
+\author{Lucia Welther \\ Matrikelnummer: XXXXXXX}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+% ============================================================
+\section{Smoothing Parameter Analysis}
+% ============================================================
+
+Figure~\ref{fig:smoothing} shows the relationship between the smoothing parameter \( k \) and model performance.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{test_smooth.png}
+    \caption{Accuracy and F1-score as functions of smoothing parameter \( k \)}
+    \label{fig:smoothing}
+\end{figure}
+
+\textbf{Observations:}
+\begin{itemize}
+    \item When \( k \) is very small (e.g., 0.001), the model shows [describe performance - e.g., "lower performance due to overfitting to the training data"].
+    \item As \( k \) increases to around [X], performance [increases/stabilizes] because...
+    \item When \( k \) becomes very large (e.g., 10), performance [decreases/remains stable] because...
+\end{itemize}
+
+
+% ============================================================
+\section{Feature Engineering}
+% ============================================================
+
+\subsection{Feature Set 1: Stopword Removal}
+
+\textbf{Results:}
+\begin{itemize}
+    \item Accuracy: [your value]
+    \item F1-score: [your value]
+\end{itemize}
+
+
+\subsection{Feature Set 2: Bigrams}
+
+\textbf{Results:}
+\begin{itemize}
+    \item Accuracy: [your value]
+    \item F1-score: [your value]
+\end{itemize}
+
+
+\subsection{Comparison}
+
+Table~\ref{tab:features} summarizes the performance of different feature sets.
+
+\begin{table}[H]
+\centering
+\caption{Performance comparison of feature engineering approaches}
+\label{tab:features}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Feature Set} & \textbf{Accuracy} & \textbf{F1-Score} \\ 
+\midrule
+Baseline (Bag-of-Words) & X.XXXX & X.XXXX \\
+Binary BoW (Feature 1) & X.XXXX & X.XXXX \\
+Bigrams (Feature 2) & X.XXXX & X.XXXX \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+% ============================================================
+\section{Model Evaluation Results}
+% ============================================================
+
+\subsection{Naive Bayes Classifier}
+
+The Naive Bayes classifier with optimal smoothing parameter \( k = \) [your value] achieved:
+\begin{itemize}
+    \item \textbf{Accuracy:} [your value]
+    \item \textbf{F1-Score:} [your value]
+\end{itemize}
+
+\subsection{Logistic Regression Classifier}
+
+The Logistic Regression classifier with learning rate \( \eta = 0.01 \), 10 epochs, and L2 regularization parameter \( C = 0.1 \) achieved:
+\begin{itemize}
+    \item \textbf{Accuracy:} [your value]
+    \item \textbf{F1-Score:} [your value]
+\end{itemize}
+
+\subsection{Overall Comparison}
+
+Table~\ref{tab:models} compares the two classifiers.
+
+\begin{table}[H]
+\centering
+\caption{Performance comparison of Naive Bayes vs. Logistic Regression}
+\label{tab:models}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Model} & \textbf{Accuracy} & \textbf{F1-Score} \\ 
+\midrule
+Naive Bayes & X.XXXX & X.XXXX \\
+Logistic Regression & X.XXXX & X.XXXX \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ============================================================
+% BONUS SECTION (if applicable)
+% ============================================================
+\section{Bonus: Discussion Questions}
+
+\subsection{Effect of Smoothing Parameter}
+
+[Answer Question 1: What is the effect of the smoothing parameter k in Naive Bayes for the calculation of word probabilities? What happens to the probabilities of the words when k is very large compared to their observed frequencies in the training data?]
+
+\subsection{Word Order Shuffling}
+
+[Answer Question 2: If we shuffle the order of the words within each document during training, will this affect the results of the model on the test set? Why or why not?]
+
+\subsection{Purpose of Softmax Function}
+
+[Answer Question 3: Why do we need the softmax function if the model already produces a score for each class?]
+
+\subsection{Decision Threshold Tuning}
+
+[Answer Question 4: In this binary classification setup we select the predicted class by taking the arg max over the class scores. In this case is equivalent to choosing the class whose predicted probability is greater than 0.5. If we wanted to fine-tune the decision threshold to improve the evaluation results: how many times (if at all) do we need to train the model to find the best threshold value?]
+
+\subsection{GitHub Repository}
+
+The complete implementation is available at: \url{https://github.com/yourusername/nlp-assignment1}
+
+\textbf{Last commit hash:} \texttt{abc123def456...}
+
+
+
+\section{Conclusion}
+
+
+
+\end{document}
