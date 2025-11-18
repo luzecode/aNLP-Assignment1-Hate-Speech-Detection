@@ -64,7 +64,7 @@ class LogReg:
             X = X[None, :]
 
         scores = X @ self.W    # (N x F) @ (F x 2) = (N x 2)
-        return self.softmax(scores)
+        return self.softmax(scores) #activation function
         ############################################################
 
 
@@ -82,7 +82,7 @@ class LogReg:
             X = X[None, :]
 
         probs = self.p(X)                     # N x 2
-        class_idx = np.argmax(probs, axis=1)  # N
+        class_idx = np.argmax(probs, axis=1)  # N , getting the most likely class
 
         idx2label = {0: "offensive", 1: "nonoffensive"}
 
